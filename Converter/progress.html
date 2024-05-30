@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progression de la Conversion</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+        <span id="progress-text">0%</span>
+    </div>
+
+    <script>
+        function updateProgressBar() {
+            const totalDuration = 10000; // Durée totale de conversion simulée en millisecondes (10 secondes)
+            const intervalTime = 100; // Intervalle de mise à jour en millisecondes (0.1 seconde)
+            let elapsedTime = 0;
+
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            const interval = setInterval(() => {
+                elapsedTime += intervalTime;
+                const percentage = Math.min((elapsedTime / totalDuration) * 100, 100);
+
+                progressBar.style.width = percentage + '%';
+                progressText.innerText = Math.round(percentage) + '%';
+
+                if (elapsedTime >= totalDuration) {
+                    clearInterval(interval);
+                    progressText.innerText = 'Conversion terminée';
+                    localStorage.setItem('conversionStarted', false);
+                }
+            }, intervalTime);
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('conversionStarted') === 'true') {
+                updateProgressBar();
+            } else {
+                document.getElementById('progress-text').innerText = 'Aucune conversion en cours';
+            }
+        }
+    </script>
+</body>
+</html>
